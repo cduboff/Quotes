@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'quote.css' %}">
+</head>
+<body>
+    <div id="wrapper">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags}}"{% endif %}>{{message}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="header">
+            <h3>Welcome {{request.session.name}}</h3>
+            <a href="/edit_user/{{request.session.user_id}}">Edit my Account</a>
+            <a href="/logout">Log Out</a>
+        </div>
+        <h3>Quotes</h3>
+        <div id="quotes">
+            {% for quote in quotes reversed %}
+                <p>{{quote.author}}: "{{quote.content}}"</p>
+                <p>Posted by <a href="/user/{{quote.poster.id}}">{{quote.poster.first_name}} {{quote.poster.last_name}}</a></p>
+                <p id=likes>{{quote.likes.count}} people like this
+                <a href="quotes/like/{{quote.id}}">Like!</a></p>
+                {% if request.session.user_id == quote.poster.id %}
+                    <p><a href="quotes/delete/{{quote.id}}">Delete</a></p>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div id="form">
+            <form action="/quotes/" method=POST>
+            {% csrf_token %}
+                <h3>Add a Quote!</h3>
+                <p>Author <input type="text" name="author"></p>
+                <p>Quote <textarea name="content"></textarea></p>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

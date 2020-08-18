@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Account</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'quote.css' %}">
+</head>
+<body>
+    <div id="wrapper">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags}}"{% endif %}>{{message}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="header">
+            <h3>Edit My Account</h3>
+            <a href="/back">Back</a>
+            <a href="/logout">Log Out</a>
+        </div>
+        <form action="/edit_user/{{request.session.user_id}}" method="POST">
+        {% csrf_token %}
+            <p>First name <input type="text" name="first_name" placeholder="{{edit_user.first_name}}"></p>
+            <p>Last Name <input type="text" name="last_name" placeholder="{{edit_user.last_name}}"></p>
+            <p>Email <input type="text" name="email" placeholder="{{edit_user.email}}"></p>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+</body>
+</html>

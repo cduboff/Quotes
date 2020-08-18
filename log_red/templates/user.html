@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Quotes</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h3>{{request.session.name}}'s Quotes</h3>
+            <a href="/back">Back</a>
+            <a href="/logout">Log Out</a>
+        </div>
+        
+        {% for quote in user.quotes.all reversed %}
+            <div id="quote">
+                <p>{{quote.author}}: "{{quote.content}}"</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
